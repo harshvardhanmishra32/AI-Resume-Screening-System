@@ -13,9 +13,18 @@ def assemble_db_url() -> str:
     return url
 
 def assemble_sync_db_url() -> str:
-    url = os.getenv("SYNC_DATABASE_URL", "sqlite:///./hirelens.db")
+    url = os.getenv("SYNC_DATABASE_URL")
+    if not url:
+        db_url = os.getenv("DATABASE_URL")
+        if db_url:
+            url = db_url
+        else:
+            url = "sqlite:///./hirelens.db"
+            
     if url.startswith("postgres://"):
         return url.replace("postgres://", "postgresql://", 1)
+    if url.startswith("postgresql+asyncpg://"):
+        return url.replace("postgresql+asyncpg://", "postgresql://", 1)
     return url
 
 class Settings(BaseModel):
