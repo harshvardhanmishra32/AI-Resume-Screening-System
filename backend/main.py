@@ -3,9 +3,33 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.api import api_router
 
+from contextlib import asynccontextmanager
+from alembic.config import Config
+from alembic import command
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Run database migrations on startup
+    try:
+        import os
+        # Ensure we look in the correct directory for alembic.ini
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        ini_path = os.path.join(base_dir, "alembic.ini")
+        if not os.path.exists(ini_path):
+            # Fallback if working directory is already backend
+            ini_path = "alembic.ini"
+            
+        alembic_cfg = Config(ini_path)
+        command.upgrade(alembic_cfg, "head")
+        print("Database migrated successfully on startup.")
+    except Exception as e:
+        print(f"Error running migrations on startup: {e}")
+    yield
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    lifespan=lifespan,
 )
 
 # Set CORS origins
