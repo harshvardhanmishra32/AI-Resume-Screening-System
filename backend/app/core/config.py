@@ -37,6 +37,11 @@ class Settings(BaseModel):
     CELERY_RESULT_BACKEND: str = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
     
     # CORS
-    BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:3000"]
+    BACKEND_CORS_ORIGINS: list[str] = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000"
+    ]
 
 settings = Settings()
