@@ -39,7 +39,10 @@ export default function LoginPage() {
         }, 1200);
       } else {
         // If user not found and it looks like a demo email, try to auto-register first for a smooth out-of-the-box demo
-        if (response.status === 401 && (email === "demo@hirelens.ai" || email.includes("demo"))) {
+        const isDemo = email === "demo@hirelens.ai" || email.includes("demo");
+        const isCandidateDemo = email === "candidate@hirelens.ai" || email.includes("candidate");
+        
+        if (response.status === 401 && (isDemo || isCandidateDemo)) {
           setErrorMsg("Demo user not found. Attempting to auto-create credentials...");
           
           const regResponse = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
@@ -49,8 +52,8 @@ export default function LoginPage() {
               email,
               password,
               first_name: "Demo",
-              last_name: "Recruiter",
-              role_names: ["RECRUITER"]
+              last_name: isCandidateDemo ? "Candidate" : "Recruiter",
+              role_names: isCandidateDemo ? ["CANDIDATE"] : ["RECRUITER"]
             }),
           });
 
