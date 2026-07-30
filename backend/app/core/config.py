@@ -37,11 +37,11 @@ class Settings(BaseModel):
     CELERY_RESULT_BACKEND: str = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
     
     # CORS
-    BACKEND_CORS_ORIGINS: list[str] = [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:8000",
-        "http://127.0.0.1:8000"
-    ]
+    BACKEND_CORS_ORIGINS: list[str] = Field(default_factory=lambda: [
+        origin.strip() for origin in
+        os.getenv("BACKEND_CORS_ORIGINS", 
+            "http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000,https://ai-resume-screening-system-sable.vercel.app"
+        ).split(",")
+    ])
 
 settings = Settings()
