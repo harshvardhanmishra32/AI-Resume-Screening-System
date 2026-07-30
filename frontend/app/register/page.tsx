@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ShieldAlert, CheckCircle2, User, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function RegisterPage() {
     setSuccessMsg("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/register", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -45,7 +46,7 @@ export default function RegisterPage() {
         setErrorMsg(errData.detail || "Registration failed. Try again.");
       }
     } catch (err) {
-      setErrorMsg("Unable to connect to the backend server. Make sure the FastAPI server is running on http://localhost:8000");
+      setErrorMsg(`Unable to connect to the backend server at ${API_BASE_URL}.`);
     } finally {
       setIsLoading(false);
     }

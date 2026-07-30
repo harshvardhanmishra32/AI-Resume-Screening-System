@@ -21,6 +21,7 @@ import {
   Moon,
   Loader2
 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 interface UserProfile {
   id: string;
@@ -84,7 +85,7 @@ export default function DashboardPage() {
       }
 
       try {
-        const response = await fetch("http://localhost:8000/api/v1/auth/me", {
+        const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`

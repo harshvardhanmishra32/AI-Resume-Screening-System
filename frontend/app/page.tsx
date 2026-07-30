@@ -19,6 +19,7 @@ import {
   Activity,
   AlertTriangle
 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
@@ -61,7 +62,7 @@ export default function Home() {
             </button>
 
             <a 
-              href="http://localhost:8000/api/v1/docs" 
+              href={`${API_BASE_URL}/api/v1/docs`} 
               target="_blank" 
               className="text-xs font-semibold px-4 py-2 border border-border rounded-lg hover:bg-secondary transition-colors hidden sm:inline-block"
             >
@@ -122,7 +123,7 @@ export default function Home() {
               Recruiter Demo Console <ArrowRight className="h-4 w-4" />
             </a>
             <a 
-              href="http://localhost:8000/api/v1/docs" 
+              href={`${API_BASE_URL}/api/v1/docs`} 
               target="_blank"
               className="h-11 px-6 rounded-lg border border-border bg-card font-medium flex items-center justify-center gap-2 hover:bg-secondary transition-colors text-sm"
             >
@@ -385,7 +386,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-6">
-            <a href="http://localhost:8000/api/v1/docs" target="_blank" className="hover:text-foreground transition-colors flex items-center gap-1.5">
+            <a href={`${API_BASE_URL}/api/v1/docs`} target="_blank" className="hover:text-foreground transition-colors flex items-center gap-1.5">
               API Documentation
             </a>
             <a href="https://github.com" target="_blank" className="hover:text-foreground transition-colors flex items-center gap-1.5">

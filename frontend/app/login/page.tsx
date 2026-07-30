@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight, ShieldAlert, CheckCircle2, Lock, Mail, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function LoginPage() {
 
     try {
       // Attempt login
-      const response = await fetch("http://localhost:8000/api/v1/auth/login-json", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/login-json`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -41,7 +42,7 @@ export default function LoginPage() {
         if (response.status === 401 && (email === "demo@hirelens.ai" || email.includes("demo"))) {
           setErrorMsg("Demo user not found. Attempting to auto-create credentials...");
           
-          const regResponse = await fetch("http://localhost:8000/api/v1/auth/register", {
+          const regResponse = await fetch(`${API_BASE_URL}/api/v1/auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -55,7 +56,7 @@ export default function LoginPage() {
 
           if (regResponse.ok) {
             // Register succeeded, try logging in again
-            const loginRetry = await fetch("http://localhost:8000/api/v1/auth/login-json", {
+            const loginRetry = await fetch(`${API_BASE_URL}/api/v1/auth/login-json`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password }),
@@ -78,7 +79,7 @@ export default function LoginPage() {
         setErrorMsg(errData.detail || "Authentication failed. Check credentials.");
       }
     } catch (err) {
-      setErrorMsg("Unable to connect to the backend server. Make sure the FastAPI server is running on http://localhost:8000");
+      setErrorMsg(`Unable to connect to the backend server at ${API_BASE_URL}.`);
     } finally {
       setIsLoading(false);
     }
