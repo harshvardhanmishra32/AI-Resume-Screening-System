@@ -14,7 +14,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         return False
 
 def get_password_hash(password: str) -> str:
-    salt = bcrypt.gensalt()
+    import os
+    rounds = int(os.getenv("BCRYPT_ROUNDS", "4"))
+    salt = bcrypt.gensalt(rounds=rounds)
     return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 import uuid
