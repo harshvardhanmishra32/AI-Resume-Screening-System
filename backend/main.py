@@ -4,14 +4,15 @@ from app.core.config import settings
 from app.api.api import api_router
 
 from contextlib import asynccontextmanager
-from alembic.config import Config
-from alembic import command
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Run database migrations on startup
     try:
         import os
+        from alembic.config import Config
+        from alembic import command
+        
         # Ensure we look in the correct directory for alembic.ini
         base_dir = os.path.dirname(os.path.abspath(__file__))
         ini_path = os.path.join(base_dir, "alembic.ini")
