@@ -20,6 +20,10 @@ async def lifespan(app: FastAPI):
             ini_path = "alembic.ini"
             
         alembic_cfg = Config(ini_path)
+        # Dynamically set the migration script location directory relative to base_dir
+        script_dir = os.path.join(base_dir, "alembic")
+        alembic_cfg.set_main_option("script_location", script_dir)
+        
         command.upgrade(alembic_cfg, "head")
         print("Database migrated successfully on startup.")
     except Exception as e:
